@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="450.0" prefWidth="700.0" style="-fx-background-color: #66bb6a;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.upt.fis.sample.controller.SignUpController">
+    <children>
+        <AnchorPane layoutX="-1.0" layoutY="87.0" prefHeight="362.0" prefWidth="702.0" style="-fx-background-color: white;">
+            <children>
+                <AnchorPane prefHeight="35.0" prefWidth="704.0" style="-fx-background-color: #98ee99;">
+                    <children>
+                        <Label layoutX="325.0" layoutY="8.0" text="Sign Up" textFill="#403c3c">
+                            <font>
+                                <Font name="Candara" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+                <PasswordField fx:id="signUpPassword" layoutX="280.0" layoutY="272.0" promptText="PASSWORD">
+                    <effect>
+                        <Blend />
+                    </effect>
+                </PasswordField>
+                <TextField fx:id="signUpFirstName" layoutX="278.0" layoutY="63.0" promptText="FIRST NAME">
+                    <effect>
+                        <Blend mode="RED" />
+                    </effect>
+                </TextField>
+                <TextField fx:id="signUpLastName" layoutX="278.0" layoutY="102.0" promptText="LAST NAME">
+                    <effect>
+                        <Blend />
+                    </effect>
+                </TextField>
+                <TextField fx:id="signUpEmail" layoutX="278.0" layoutY="141.0" promptText="E-MAIL">
+                    <effect>
+                        <Blend />
+                    </effect>
+                </TextField>
+                <TextField fx:id="signUpPhone" layoutX="278.0" layoutY="181.0" promptText="PHONE NUMBER">
+                    <effect>
+                        <Blend />
+                    </effect>
+                </TextField>
+                <JFXButton fx:id="signUpButton" alignment="CENTER" buttonType="RAISED" layoutX="314.0" layoutY="312.0" prefHeight="35.0" prefWidth="81.0" ripplerFill="#bf9d9d" style="-fx-background-color: #b6c2b7;" text="Sign Up" textFill="#534e4e" />
+                <JFXRadioButton fx:id="signUpRoleClient" layoutX="284.0" layoutY="216.0" text="Client" />
+                <JFXRadioButton fx:id="signUpRoleManager" layoutX="284.0" layoutY="244.0" text="Manager" />
+                <Group layoutX="278.0" layoutY="216.0" />
+            </children>
+        </AnchorPane>
+        <Label layoutX="218.0" layoutY="38.0" text="HOTEL BOOKIGN APPLICATION">
+            <font>
+                <Font name="Candara" size="20.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
