@@ -105,4 +105,8 @@ public class CustomerServices {
         }
         return md;
     }
+
+    protected ObjectRepository<Customer> getCustomers() {
+        return customerRepository;
+    }
 }
