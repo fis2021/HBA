@@ -4,6 +4,7 @@ import org.dizitart.no2.Nitrite;
 import org.dizitart.no2.objects.ObjectRepository;
 import ro.upt.fis.sample.exceptions.EmailAlreadyRegisteredException;
 import ro.upt.fis.sample.model.Customer;
+import ro.upt.fis.sample.model.Reservation;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -13,17 +14,22 @@ import java.util.Objects;
 public class CustomerServices {
 
     private static ObjectRepository<Customer> customerRepository;
+    Nitrite database;
 
-    public static void initDataBase() {
-        Nitrite database = Nitrite.builder()
+    public void initDataBase() {
+        database = Nitrite.builder()
                 .filePath(FileSystemServer.getPathToFile("client.bd").toFile())
                 .openOrCreate("client", "client");
 
         customerRepository = database.getRepository(Customer.class);
     }
 
-    public static void addCustomer(String fistName, String lastName, String phoneNumber,
-                                   String email, String password) {
+    public void closeDatabase() {
+        database.close();
+    }
+
+    public void addCustomer(String fistName, String lastName, String phoneNumber,
+                            String email, String password) {
         checkCustomerDoesNotExist(email);
         customerRepository.insert(new Customer(fistName, lastName, phoneNumber,
                 email, encodePassword(email, password)));
@@ -34,15 +40,45 @@ public class CustomerServices {
             if (Objects.equals(email, customer.getEmail()) &&
                     Objects.equals(encodePassword(email, password), customer.getPassword())) {
                 return customer;
-            } else {
-                System.out.println("ERROR message");
             }
         }
 
         return null;
     }
 
-    private static void checkCustomerDoesNotExist(String email) {
+    public Customer getClient(String email) {
+        for (Customer customer : customerRepository.find()) {
+            if (Objects.equals(email, customer.getEmail())) {
+                return customer;
+            }
+        }
+
+        return null;
+    }
+
+    public void addReservation(String email, Reservation reservation) {
+        initDataBase();
+        for (Customer customer : customerRepository.find()) {
+            if (Objects.equals(email, customer.getEmail())) {
+                customer.addReservation(reservation);
+                customerRepository.update(customer);
+            }
+        }
+        closeDatabase();
+    }
+
+    public void cancelReservation(String email, Reservation reservation) {
+        initDataBase();
+        for (Customer customer : customerRepository.find()) {
+            if (Objects.equals(email, customer.getEmail())) {
+                customer.deleteReservation(reservation);
+                customerRepository.update(customer);
+            }
+        }
+        closeDatabase();
+    }
+
+    private void checkCustomerDoesNotExist(String email) {
         for (Customer customer : customerRepository.find()) {
             if (Objects.equals(email, customer.getEmail())) {
                 throw new EmailAlreadyRegisteredException(email);
@@ -50,7 +86,7 @@ public class CustomerServices {
         }
     }
 
-    private static String encodePassword(String salt, String password) {
+    private String encodePassword(String salt, String password) {
         MessageDigest messageDigest = getMessageDigest();
         messageDigest.update(salt.getBytes(StandardCharsets.UTF_8));
 
@@ -60,7 +96,7 @@ public class CustomerServices {
                 .replace("\"", "");
     }
 
-    private static MessageDigest getMessageDigest() {
+    private MessageDigest getMessageDigest() {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA-512");
